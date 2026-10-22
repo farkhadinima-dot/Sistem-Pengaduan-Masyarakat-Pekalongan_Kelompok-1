@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIPEMAS - Portal Pengaduan Masyarakat Online</title>
+
+<!-- External Frameworks & Fonts -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex flex-col bg-slate-100 text-slate-900 font-sans">
+
+<!-- Navigasi Utama -->
+<header class="bg-slate-900 text-white sticky top-0 z-50 border-b border-slate-800 shadow-md">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+<div class="flex items-center gap-3 cursor-pointer" onclick="gantiTab('beranda')">
+<div class="p-2.5 bg-blue-600 rounded-xl text-white shadow-md">
+<i data-lucide="mega-phone" class="w-6 h-6"></i>
+</div>
+<div>
+<h1 class="font-bold text-xl tracking-tight leading-none text-white">SIPEMAS</h1>
+<p class="text-xs text-slate-400 mt-1">Sistem Pengaduan Masyarakat Pekalongan</p>
+</div>
+</div>
+
+<!-- Menu Desktop -->
+<nav class="hidden md:flex items-center gap-1 bg-slate-800 p-1.5 rounded-xl border border-slate-700">
+<button onclick="gantiTab('beranda')" id="nav-beranda" class="nav-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all text-white bg-blue-600">
+<i data-lucide="home" class="w-4 h-4 inline mr-1"></i> Beranda
+</button>
+<button onclick="gantiTab('buat')" id="nav-buat" class="nav-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all text-slate-300 hover:text-white hover:bg-slate-700">
+<i data-lucide="plus-circle" class="w-4 h-4 inline mr-1"></i> Buat Laporan
+</button>
+<button onclick="gantiTab('lacak')" id="nav-lacak" class="nav-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all text-slate-300 hover:text-white hover:bg-slate-700">
+<i data-lucide="search" class="w-4 h-4 inline mr-1"></i> Lacak Tiket
+</button>
+<button onclick="gantiTab('admin')" id="nav-admin" class="nav-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all text-slate-300 hover:text-white hover:bg-slate-700">
+<i data-lucide="layout-dashboard" class="w-4 h-4 inline mr-1"></i> Panel Admin
+</button>
+</nav>
+
+<button onclick="toggleMenuMobile()" class="md:hidden text-slate-300 hover:text-white p-2">
+<i data-lucide="menu" class="w-6 h-6"></i>
+</button>
+</div>
+
+<!-- Menu Mobile -->
+<div id="menu-mobile" class="hidden md:hidden bg-slate-800 border-t border-slate-700 px-4 py-3 space-y-2">
+<button onclick="gantiTab('beranda')" class="w-full text-left px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-700 text-sm font-medium">Beranda</button>
+<button onclick="gantiTab('buat')" class="w-full text-left px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-700 text-sm font-medium">Buat Laporan</button>
+<button onclick="gantiTab('lacak')" class="w-full text-left px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-700 text-sm font-medium">Lacak Tiket</button>
+<button onclick="gantiTab('admin')" class="w-full text-left px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-700 text-sm font-medium">Panel Admin</button>
+</div>
+</header>
+
+<!-- Konten Utama -->
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+<!-- TAB 1: BERANDA -->
+<section id="tab-beranda" class="tab-content space-y-8">
+<div class="bg-slate-900 text-white rounded-3xl p-8 sm:p-12 border border-slate-800 shadow-xl relative overflow-hidden">
+<div class="max-w-2xl space-y-5 relative z-10">
+<span class="inline-block px-3 py-1 bg-blue-600/30 text-blue-300 border border-blue-500/30 rounded-full text-xs font-semibold">
+Layanan Pengaduan Resmi
+</span>
+<h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+Sampaikan Aspirasi & Keluhan Anda Langsung Ke Pemerintah Daerah
+</h2>
+<p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+Wadah pelaporan masyarakat terpadu untuk percepatan perbaikan fasilitas publik, infrastruktur jalan, kebersihan lingkungan, serta pelayanan administrasi.
+</p>
+<div class="flex flex-wrap gap-3 pt-2">
+<button onclick="gantiTab('buat')" class="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition-all flex items-center gap-2 shadow-lg shadow-blue-600/30">
+<i data-lucide="file-plus" class="w-4 h-4"></i> Buat Pengaduan
+</button>
+<button onclick="gantiTab('lacak')" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-xl text-sm border border-slate-700 transition-all flex items-center gap-2">
+<i data-lucide="search" class="w-4 h-4"></i> Cek Status Laporan
+</button>
+</div>
+</div>
+</div>
+
+<!-- Panel Ringkasan Data -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+<div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
+<i data-lucide="inbox" class="w-6 h-6"></i>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase">Total Masuk</p>
+<h3 id="stat-total" class="text-2xl font-extrabold text-slate-900">0</h3>
+</div>
+</div>
+<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+<div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
+<i data-lucide="loader" class="w-6 h-6"></i>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase">Proses Verifikasi</p>
+<h3 id="stat-proses" class="text-2xl font-extrabold text-slate-900">0</h3>
+</div>
+</div>
+<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+<div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
+<i data-lucide="check-circle-2" class="w-6 h-6"></i>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase">Telah Selesai</p>
+<h3 id="stat-selesai" class="text-2xl font-extrabold text-slate-900">0</h3>
+</div>
+</div>
+<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+<div class="p-3 bg-rose-50 text-rose-600 rounded-xl">
+<i data-lucide="siren" class="w-6 h-6"></i>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase">Prioritas Darurat</p>
+<h3 id="stat-urgen" class="text-2xl font-extrabold text-slate-900">0</h3>
+</div>
+</div>
+</div>
+
+<!-- Daftar Laporan Terbaru -->
+<div class="space-y-4">
+<div class="border-b border-slate-200 pb-3">
+<h3 class="text-lg font-bold text-slate-900">Laporan Publik Terbaru</h3>
+<p class="text-xs text-slate-500">Daftar aspirasi warga yang terkirim ke sistem secara terintegrasi.</p>
+</div>
+<div id="beranda-recent-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+<!-- Data diisi oleh script -->
+</div>
+</div>
+</section>
+
+<!-- TAB 2: FORM PENGADUAN -->
+<section id="tab-buat" class="tab-content hidden max-w-3xl mx-auto">
+<div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+<div class="border-b border-slate-200 pb-4">
+<h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+<i data-lucide="square-pen" class="w-5 h-5 text-blue-600"></i> Formulir Pengaduan Warga
+</h2>
+<p class="text-xs text-slate-500 mt-1">Harap isi formulir di bawah ini dengan informasi yang jelas dan akurat.</p>
+</div>
+
+<form id="form-pengaduan" onsubmit="submitFormLaporan(event)" class="space-y-5">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-bold uppercase text-slate-700 mb-1">Nama Pelapor *</label>
+<input type="text" id="input-nama" required placeholder="Sesuai KTP" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white text-slate-900 focus:border-blue-600 outline-none">
+</div>
+<div>
+<label class="block text-xs font-bold uppercase text-slate-700 mb-1">NIK (16 Digit) *</label>
+<div class="relative">
+<input type="text" id="input-nik" required maxlength="16" pattern="\d{16}" placeholder="3326xxxxxxxxxxxx" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white text-slate-900 focus:border-blue-600 outline-none">
+<button type="button" onclick="cekValidasiNik()" class="absolute right-1.5 top-1.5 px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-[11px] font-bold text-slate-700 rounded-lg border border-slate-300">Cek NIK</button>
+</div>
+<p id="nik-status" class="text-[11px] mt-1 text-slate-500"></p>
+</div>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-bold uppercase text-slate-700 mb-1">Kategori Masalah *</label>
+<select id="input-kategori" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white text-slate-900 focus:border-blue-600 outline-none">
+<option value="">-- Pilih Jenis Kategori --</option>
+<option value="Infrastruktur & Jalan">Infrastruktur & Jalan</option>
+<option value="Pelayanan Publik">Pelayanan Publik & Layanan Administrasi</option>
+<option value="Kebersihan & Lingkungan">Kebersihan & Pengelolaan Sampah</option>
+<option value="Kesehatan & Sosial">Kesehatan & Bansos</option>
+<option value="Keamanan & Ketertiban">Keamanan & Ketertiban Umum</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-bold uppercase text-slate-700 mb-1">Wilayah Kecamatan *</label>
+<select id="input-wilayah" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white text-slate-900 focus:border-blue-600 outline-none">
+<option value="">-- Pilih Wilayah --</option>
+<option value="Kecamatan Pekalongan Barat">Kecamatan Pekalongan Barat</option>
+<option value="Kecamatan Pekalongan Timur">Kecamatan Pekalongan Timur</option>
+<option value="Kecamatan Pekalongan Utara">Kecamatan Pekalongan Utara</option>
+<option value="Kecamatan Pekalongan Selatan">Kecamatan Pekalongan Selatan</option>
+</select>
+</div>
+</div>
+
+<div>
+<label class="block text-xs font-bold uppercase text-slate-700 mb-1">Judul Laporan *</label>
+<input type="text" id="input-judul" required placeholder="Tuliskan subjek ringkas pengaduan" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white text-slate-900 focus:border-blue-600 outline-none">
+</div>
+
+<div>
+<label class="block text-xs font-bold uppercase text-slate-700 mb-1">Rincian Kejadian / Kronologi *</label>
+<textarea id="input-isi" rows="4" required placeholder="Jelaskan detail lokasi, waktu, serta dampaknya secara terperinci..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white text-slate-900 focus:border-blue-600 outline-none"></textarea>
+</div>
+
+<div>
+<label class="block text-xs font-bold uppercase text-slate-700 mb-1">Unggah Lampiran Bukti (Opsional)</label>
+<div class="border-2 border-dashed border-slate-300 rounded-2xl p-5 text-center bg-slate-50">
+<input type="file" id="input-foto" accept="image/*" onchange="previewFotoUpload(event)" class="hidden">
+<label for="input-foto" class="cursor-pointer flex flex-col items-center gap-1">
+<i data-lucide="upload" class="w-8 h-8 text-slate-400"></i>
+<span class="text-xs font-bold text-blue-600">Klik untuk memilih file gambar</span>
+<span class="text-[11px] text-slate-500">Format JPG, JPEG, PNG (Maks 2MB)</span>
+</label>
+<div id="preview-box" class="mt-3 hidden">
+<img id="preview-img" src="" alt="Preview Bukti" class="max-h-40 mx-auto rounded-lg border shadow-sm">
+</div>
+</div>
+</div>
+
+<button type="submit" id="btn-kirim" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition-all text-sm flex items-center justify-center gap-2">
+<i data-lucide="send" class="w-4 h-4"></i> Kirim Laporan Pengaduan
+</button>
+</form>
+</div>
+</section>
+
+<!-- TAB 3: LACAK TIKET -->
+<section id="tab-lacak" class="tab-content hidden max-w-3xl mx-auto space-y-6">
+<div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 text-center space-y-4">
+<div>
+<h2 class="text-xl font-bold text-slate-900">Lacak Status Pengaduan</h2>
+<p class="text-xs text-slate-500 mt-1">Masukkan ID Tiket laporan Anda untuk melihat perkembangan proses tindak lanjut.</p>
+</div>
+<div class="flex gap-2 max-w-md mx-auto">
+<input type="text" id="input-lacak-id" placeholder="Contoh: TKT-20261021-XXXX" class="flex-grow px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold uppercase bg-white text-slate-900 focus:border-blue-600 outline-none">
+<button onclick="cariTiketLaporan()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition-all flex items-center gap-1">
+<i data-lucide="search" class="w-4 h-4"></i> Cari
+</button>
+</div>
+</div>
+
+<div id="hasil-lacak-box" class="hidden bg-white rounded-3xl border border-slate-200 shadow-sm p-6 space-y-5">
+<div class="flex flex-wrap items-center justify-between border-b border-slate-200 pb-3 gap-2">
+<div>
+<span id="hasil-id" class="text-xs font-bold text-blue-600 uppercase tracking-wider">TKT-0000</span>
+<h3 id="hasil-judul" class="text-lg font-bold text-slate-900">Judul Laporan</h3>
+</div>
+<div id="hasil-badge"></div>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+<div><span class="text-slate-500 font-medium">Pelapor:</span> <strong id="hasil-nama" class="text-slate-800"></strong></div>
+<div><span class="text-slate-500 font-medium">Tanggal Masuk:</span> <strong id="hasil-tanggal" class="text-slate-800"></strong></div>
+<div><span class="text-slate-500 font-medium">Kategori:</span> <strong id="hasil-kategori" class="text-slate-800"></strong></div>
+<div><span class="text-slate-500 font-medium">Wilayah:</span> <strong id="hasil-wilayah" class="text-slate-800"></strong></div>
+</div>
+
+<div class="space-y-3 text-xs">
+<div>
+<h4 class="font-bold text-slate-700 uppercase mb-1">Rincian Pengaduan:</h4>
+<p id="hasil-isi" class="bg-white p-3.5 rounded-xl border border-slate-200 text-slate-800 leading-relaxed"></p>
+</div>
+
+<div id="box-klasifikasi-sistem" class="p-3.5 rounded-xl bg-slate-100 border border-slate-200 space-y-1">
+<span class="font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5 text-[11px]">
+<i data-lucide="shield-alert" class="w-3.5 h-3.5 text-slate-600"></i> Catatan Verifikasi Sistem:
+</span>
+<p id="hasil-catatan-sistem" class="text-slate-700 font-medium italic"></p>
+</div>
+
+<div id="box-tanggapan-petugas" class="p-3.5 rounded-xl bg-blue-50 border border-blue-200 space-y-1">
+<h4 class="font-bold text-blue-900 uppercase tracking-wider text-[11px]">Respon / Tindak Lanjut Instansi:</h4>
+<p id="hasil-tanggapan-text" class="text-blue-950 font-medium"></p>
+</div>
+</div>
+
+<div class="pt-2 flex justify-end">
+<button onclick="window.print()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-xs flex items-center gap-1.5 border border-slate-300">
+<i data-lucide="printer" class="w-3.5 h-3.5"></i> Cetak Bukti Laporan
+</button>
+</div>
+</div>
+</section>
+
+<!-- TAB 4: DASHBOARD ADMIN -->
+<section id="tab-admin" class="tab-content hidden space-y-6">
+<div class="flex flex-wrap items-center justify-between gap-3">
+<div>
+<h2 class="text-xl font-bold text-slate-900">Panel Kelola Pengaduan (Admin)</h2>
+<p class="text-xs text-slate-500">Monitoring status, verifikasi berkas, dan penanganan tindak lanjut.</p>
+</div>
+<button onclick="downloadFormatJSON()" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-xl text-xs flex items-center gap-1.5">
+<i data-lucide="download" class="w-4 h-4"></i> Ekspor Data JSON
+</button>
+</div>
+
+<!-- Grafik Monitoring -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+<h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Sebaran Kategori Laporan</h3>
+<div class="h-56 flex items-center justify-center">
+<canvas id="chartGrupKategori"></canvas>
+</div>
+</div>
+<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+<h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Status Penanganan Laporan</h3>
+<div class="h-56 flex items-center justify-center">
+<canvas id="chartGrupStatus"></canvas>
+</div>
+</div>
+</div>
+
+<!-- Tabel Data -->
+<div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-5 space-y-4">
+<div class="flex items-center justify-between border-b border-slate-200 pb-3">
+<h3 class="font-bold text-slate-900 text-sm">Daftar Pengaduan Masuk</h3>
+<select id="filter-status-tabel" onchange="muatTabelAdmin()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium bg-slate-50 text-slate-800">
+<option value="SEMUA">Semua Status</option>
+<option value="Menunggu">Menunggu</option>
+<option value="Diproses">Diproses</option>
+<option value="Selesai">Selesai</option>
+</select>
+</div>
+
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs border-collapse">
+<thead>
+<tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold uppercase">
+<th class="p-2.5">ID / Tanggal</th>
+<th class="p-2.5">Pelapor / NIK</th>
+<th class="p-2.5">Judul & Kategori</th>
+<th class="p-2.5">Tingkat Prioritas</th>
+<th class="p-2.5">Status</th>
+<th class="p-2.5 text-right">Tindakan</th>
+</tr>
+</thead>
+<tbody id="tabel-body-admin" class="divide-y divide-slate-200 font-medium">
+<!-- Data tabel diisi via JS -->
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-6 mt-auto text-xs text-center space-y-1">
+<p>© 2026 SIPEMAS - Sistem Pengaduan Masyarakat Pekalongan.</p>
+<p class="text-slate-500">Dikembangkan untuk Tugas Praktikum Sistem Informasi Publik.</p>
+</footer>
+
+<!-- Modal Respon Admin -->
+<div id="modal-update" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+<div class="bg-white rounded-2xl max-w-md w-full p-5 space-y-4 border border-slate-200 shadow-xl">
+<div class="flex items-center justify-between border-b border-slate-200 pb-2">
+<h3 class="font-bold text-slate-900 text-sm">Update Status & Tanggapan</h3>
+<button onclick="tutupModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+</div>
+<input type="hidden" id="modal-id-tiket">
+
+<div class="space-y-3 text-xs">
+<div>
+<label class="block font-bold text-slate-700 mb-1">Status Laporan</label>
+<select id="modal-select-status" class="w-full p-2.5 rounded-lg border border-slate-300 font-medium bg-slate-50 text-slate-900">
+<option value="Menunggu">Menunggu</option>
+<option value="Diproses">Diproses</option>
+<option value="Selesai">Selesai</option>
+<option value="Ditolak">Ditolak</option>
+</select>
+</div>
+<div>
+<label class="block font-bold text-slate-700 mb-1">Catatan Respon Instansi</label>
+<textarea id="modal-text-respon" rows="3" placeholder="Tulis tanggapan resmi penanganan..." class="w-full p-2.5 rounded-lg border border-slate-300 bg-white text-slate-900 outline-none"></textarea>
+</div>
+</div>
+
+<div class="flex justify-end gap-2 pt-2">
+<button onclick="tutupModal()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg text-xs border border-slate-300">Batal</button>
+<button onclick="simpanResponPetugas()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs">Simpan Perubahan</button>
+</div>
+</div>
+</div>
+
+<!-- External Logic File -->
+<script src="script.js"></script>
+</body>
+</html>
